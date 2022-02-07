@@ -17,7 +17,9 @@ enum HomeUseCase {
             case failure(Error)
         }
 
-        struct ViewModel {
+        enum ViewModel {
+            case success(HomeView.ViewModel)
+            case failure(error: String)
         }
     }
 }
