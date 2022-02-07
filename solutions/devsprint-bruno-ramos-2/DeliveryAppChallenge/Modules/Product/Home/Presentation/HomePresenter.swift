@@ -20,6 +20,22 @@ final class HomePresenter: HomePresentationLogic {
     weak var viewController: HomeDisplayLogic?
 
     func presentHomeData(response: HomeUseCase.FetchData.Response) {
-        viewController?.displayHome(viewModel: HomeUseCase.FetchData.ViewModel())
+        switch response {
+        case .success(let homeRestaurants):
+            prepareDisplaySuccess(homeRestaurants)
+        case .failure(let error):
+            print("Log: \(error.localizedDescription)")
+
+            viewController?.displayHome(viewModel: .failure(error: "Desculpe não conseguimos carregar os dados."))
+        }
+    }
+
+    private func prepareDisplaySuccess(_ homeRestaurants: Home) {
+        let restaurants: [HomeView.RestaurantViewModel] = homeRestaurants.compactMap {
+            let subtitle = "\($0.category) \($0.deliveryTime.min)-\($0.deliveryTime.max) min"
+            return HomeView.RestaurantViewModel(logo: "restaurant-logo", title: $0.name, subtitle: subtitle)
+        }
+
+        viewController?.displayHome(viewModel: .success(HomeView.ViewModel(restaurants: restaurants)))
     }
 }
