@@ -18,6 +18,13 @@ protocol HomeViewDelegate: AnyObject {
 final class HomeView: UIView {
     // MARK: ViewModel struct
     struct ViewModel {
+        let restaurants: [RestaurantViewModel]
+    }
+
+    struct RestaurantViewModel {
+        let logo: String
+        let title: String
+        let subtitle: String
     }
 
     weak var delegate: HomeViewDelegate?
